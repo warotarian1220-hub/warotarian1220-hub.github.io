@@ -1,0 +1,340 @@
+/* =========================
+   Base
+========================  */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.8;
+    background-color: #0d1b2a;
+    color: #e0e1dd;
+}
+
+.heading {
+    font-size: 35px;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 16px auto;
+}
+
+
+main {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* =========================
+   Section（共通）
+========================= */
+
+section {
+    background-color: #1b263b;
+    padding: 28px;
+    margin-bottom: 28px;
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+/* =========================
+   Headings
+========================= */
+
+h1,
+h2 {
+    margin-top: 0px;
+    margin-bottom: 16px;
+    padding: 18px 14px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #e0e1dd;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    font-size: 22px;
+}
+
+/* =========================
+   Subtitle
+========================= */
+
+.subtitle {
+    font-size: 30px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.05); 
+}
+
+/* =========================
+   Profile
+========================= */
+
+.profile {
+    max-width: 700px;
+    margin: 0 auto 28px auto;
+    padding: 40px; 
+    text-align: center;
+}
+
+.profile img {
+    display: block;
+    margin: 0 auto 16px auto;
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: transform 0.3s ease; 
+}
+
+.profile img:hover {
+    transform: scale(1.1);
+}
+
+.profile h1 {
+    background: none;
+    padding: 0;
+    margin-bottom: 8px;
+}
+
+.profile p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+/* =========================
+   Experience
+========================= */
+
+.experience {
+    background-color: #223554;
+}
+
+.experience ul {
+    padding-left: 22px;
+    margin: 0;
+}
+
+.experience li {
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+/* =========================
+   Links
+========================= */
+
+a {
+    color: #778da9;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   Utility
+========================= */
+
+.text-muted {
+    color: #b0b6c3;
+}
+
+/* =========================
+   Layout
+========================= */
+
+.layout {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+}
+
+/* =========================
+   Side bar
+========================= */
+
+.sidebar {
+	position: fixed;
+        top: 0;
+	left: 0;
+	height: 100vh;
+	overflow-y: auto;
+        width: 200px;
+        background-color: #0b132b;
+        padding: 20px;
+        box-sizing: border-box;
+}
+
+.sidebar h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 20px;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.sidebar a {
+    position: relative;
+    color: #e0e1dd;
+    text-decoration: none;
+}
+
+.sidebar a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: #4682b4;
+    transition: width 0.3s ease;
+}
+
+
+.sidebar a:hover {
+    color: #778da9;
+    transition: color 0.3s ease;
+}
+
+.sidebar a.active::after,
+.sidebar a:hover::after {
+	width: 100%;
+}
+
+.sidebar a.active {
+    color: #b0c4de;
+    font-weight: bold;
+    
+}
+
+/* =========================
+   Contents
+========================= */
+
+.content {
+    flex: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    min-width: 0;
+}
+
+/* =========================
+   Image
+========================= */
+
+.system-image {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 16px auto;
+    object-fit: contain;
+
+}
+
+
+.command-text {
+	font-family: monospace;
+	background-color: #cfe0f5;
+	color: #002244;
+	padding: 0.6em;
+	border-radius: 6px;
+	display: block;
+	max-width: 100%;
+	white-space: pre-wrap;
+        overflow-wrap: break-word;
+        word-break: break-word;       
+
+        overflow-x: auto;
+}
+
+.uppercase-red-big {
+	text-transform: uppercase;
+	color: red;
+	font-size: 2.5em;
+	font-weight: bold;
+	padding: 3em 3em;
+}
+
+.strikethrough {
+	text-decoration: line-through;
+	color: #888;
+	font-style: italic;
+}
+
+.uppercase-yellow-big {
+	text-transform: uppercase;
+        color: yellow;
+        font-size: 3em;
+        font-weight: bold;
+        padding: 0.7em 0.7em;
+}
+
+
+
+
+/* =========================
+   Media
+========================= */
+
+@media (max-width: 768px) {
+    .layout {
+        flex-direction: column; 
+    }
+
+    .sidebar {
+        flex: 0 0 auto;
+        width: 100%; 
+    }
+
+    .content {
+        max-width: 100%; 
+        margin: 0;
+        padding: 10px;
+    }
+
+    .system-image {
+        width: 100%;
+        height: auto; 
+    }
+}
+
+@media (max-width: 600px) {
+    .uppercase-red-big {
+        font-size: 1.5em;
+        padding: 1em 1em;
+    }
+
+    .uppercase-yellow-big {
+        font-size: 2em;
+        padding: 0.5em 0.5em;
+    }
+}

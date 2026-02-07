@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Portal システム構成</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+<div class="layout"> 
+
+    <!-- サイドバー -->
+    <aside class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="structure.html">ポートフォリオポータルのシステム構成</a></li>
+	    <li><a href="squid.html">1.アクセスログ検証</a></li>
+        </ul>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="content">
+
+        <header class="site-header">
+            <h1 class="heading">システム構成</h1>
+            <p class="subtitle">Apache2 x Spring boot x MySQL によるポートフォリオ構成</p>
+        </header>
+
+	<br><section>
+		
+            <h2>概要</h2>
+            <p>
+	    本ポートフォリオポータルは、Webサーバーとアプリケーションサーバーの責務を分離した構成で運用しています。<br>フロントエンドはApache2が担当し、バックエンド処理はSpring Bootアプリケーションが担当します。
+            </p>
+        </section>
+
+    <img src="images/systemimage.png" alt="system構成" class="system-image">
+        <section>
+            <h2>全体構成</h2>
+            <ul>
+                <li>Webサーバー: Apache2</li>
+                <li>アプリケーションサーバー: Spring Boot (Java)</li>
+                <li>データベースサーバー: MySQL</li>
+                <li>通信方式: HTTP（リバースプロキシ構成）</li>
+                <li>デプロイ形式: Spring Boot Jarをサーバー上で常駐実行</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Apache2の役割</h2>
+            <ul>
+                <li>HTML / CSS / JavaScript などの静的コンテンツ配信</li>
+                <li>リクエストの受け口としての役割</li>
+                <li>必要に応じて Spring Boot へのリクエスト転送</li>
+            </ul>
+            <p>Webサーバーとしての役割を分離することで、アプリケーション側の負荷軽減と障害切り分けを容易にしています。</p>
+        </section>
+
+        <section>
+            <h2>Spring Boot の役割</h2>
+            <ul>
+                <li>API エンドポイントの提供</li>
+                <li>業務ロジックの実装</li>
+                <li>今後の DB 連携・機能拡張の土台</li>
+            </ul>
+            <p>フレームワークを利用することで、設定よりも実装に集中できる構成を意識しています。</p>
+        </section>
+
+        <section>
+            <h2>この構成を選んだ理由</h2>
+            <ul>
+                <li>Webサーバーとアプリケーションサーバーの責務分離を理解するため</li>
+                <li>実務で一般的な構成をポートフォリオに反映するため</li>
+                <li>将来的なスケールや拡張を見据えた設計にするため</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>今後の拡張予定</h2>
+            <ul>
+                <li>API 機能の拡充</li>
+                <li>認証・認可の実装</li>
+                <li>インフラ構成の自動化</li>
+                <li>AIとPostgreSQLを組み合わせた長期記憶参照テスト検証記録を追加</li>
+            </ul>
+        </section>
+
+        <footer class="site-footer">
+            <p>&copy; 2026 Portfolio Portal</p>
+        </footer>
+
+    </main>
+
+</div> 
+<script src="js/sidebar-highlight.js"></script>
+</body>
+</html>
