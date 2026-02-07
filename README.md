@@ -1,2 +1,3 @@
 # warotarian1220-hub.github.io
-個人ポートフォリオポータルです。普段はApache2で管理してます。
+個人ポートフォリオサイトです。
+本ページは GitHub Pages 上で公開しています。
