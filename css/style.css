@@ -313,8 +313,10 @@ a:hover {
     .sidebar {
         flex: 0 0 auto;
         width: 100%;
-		height: auto;
-		position: relative;
+		max-height: none !important;  
+        height: auto !important;      
+        position: relative !important;
+        overflow: visible !important;
     }
 
     .content {
