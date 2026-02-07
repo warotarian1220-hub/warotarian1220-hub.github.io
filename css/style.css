@@ -311,13 +311,18 @@ a:hover {
     }
 
     .sidebar {
-        flex: 0 0 auto;
+        all: unset;
+        display: block;
         width: 100%;
-		max-height: none !important;  
-        height: auto !important;      
-        position: relative !important;
-        overflow: visible !important;
+        height: auto;
+        position: relative;
+        overflow: visible;
+        padding: 20px;
+        background-color: #0b132b;
+        box-sizing: border-box;
     }
+
+
 
     .content {
         max-width: 100%; 
