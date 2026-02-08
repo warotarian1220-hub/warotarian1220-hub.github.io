@@ -306,12 +306,23 @@ a:hover {
 ========================= */
 
 @media (max-width: 768px) {
-    .layout {
+        p, li, span {
+        font-size: 0.875rem;
+        line-height: 1.6;
+    }
+
+    pre.command-text {
+        font-size: 0.75rem;
+        line-height: 1.4;
+        white-space: pre-wrap;
+        word-break: break-word;
+        overflow-x: auto;
+    }
+	.layout {
         flex-direction: column; 
     }
 
     .sidebar {
-        all: unset;
         display: block;
         width: 100%;
         height: auto;
