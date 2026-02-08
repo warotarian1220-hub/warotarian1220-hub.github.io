@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Squidアクセスログをawkで整形し、通信傾向を可視化する</title>
+	<link rel="stylesheet" href="css/style.css">
+	<script src="js/script.js" defer></script>
+	<script src="js/sidebar-highlight.js"></script>
+</head>
+<body>
+
+	<div class="layout">
+
+    <aside class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="structure.html">ポートフォリオポータルのシステム構成</a></li>
+	    <li><a href="squid.html">1.アクセスログ検証</a></li>
+        </ul>
+    </aside>
+
+
+<main class="content">
+
+	<section id="first">
+		<h2>はじめに</h2>
+
+		<p>※本ポートフォリオは技術検証を目的としたものです。</p>
+		<p>利用ポリシーで制限されている外部サービスへの通信が発生した場合を想定し</p>
+		<p>アクセスログの整形・抽出による検知方法を確認しています。</p>
+		<p> 実際の運用では、就業規則やプライバシーへの配慮が前提となります。</p>
+	</section>
+         
+	<section id="raw-logs">
+	<h2>プロキシサーバーとして「squid」を使ってみる</h2>
+	
+	<img src="images/proxy_image.png" alt="プロキシイメージ">
+	
+	<p>squid(スクイッド)とは、プロキシサーバーのうちのひとつです。</p>
+
+	<p>プロキシサーバーとは、内部ネットワークから外部へのアクセスを仲介するサーバーです。</p>
+	<p>proxy(転送する)server(サービスを提供するもの）ですね。</p>
+
+	<p>普通はパソコンが直接インターネットのサイトにアクセスしますが</p>
+	<p>プロキシサーバーを使うと、一度プロキシが間に入ってからサイトにアクセスします。</p>
+
+	<br>
+	<br>
+
+
+	<p>そう、この「仲介する」というのがポイントでして、プロキシサーバーは「仲介</p>
+	<p>する」といった過程で僕達ユーザーがどのサイトにアクセスしていたのかをアク</p>
+	<p>セスログを残すのです。</p>
+
+	<br>
+	<br>
+
+	
+	<br>
+	<br>
+
+	<p>それでは次に、実際にサーバーに接続してアクセスログを見てみましょう。</p>
+	</section>
+	<section class="check-logs">
+	<img src="images/teraterm-log.png" alt="生ログスクショ">
+
+	<p class="command-text">sudo tail -3 /var/log/squid/access.log</p>
+	<p>(squidのアクセスログ、末尾から3行目まで見せて！ってコマンドです。）</p>
+	
+	<br>
+
+        <p>はい</p>
+	<p class="uppercase-red-big">全然わかりませんね。</p>
+        <p>『1769538383.194』ってなに？？」と思いますよね。</p>
+
+	<br><br><br>
+
+	<p>調べてみたところ、このよくわからない円周率のような数字の羅列は</p>
+	<p>「Unixタイムスタンプ」といって協定世界時（UTC）の</p>
+	<p>1970年1月1日午前0時0分0秒からの経過秒数を表すものだそうです。</p>
+	<p>「なんで普通の時間で書かないの？」と疑問ですよね。</p>
+
+	<br>
+	<br>
+	</section>
+
+	<section id="unix_expression">
+	<img src="images/unix_timestamp_expression.png" alt="日本チーム海外チーム">
+	<p>例えば日本のサーバーをハッキングした犯人を、海外のチームと協力して追うとします。</p>
+	<p>そしてみなさんご存知の通り、時間は地域によってバラつきがあります。</p>
+	<p>なので、アクセスログの時間表記が統一されてないとお互いの時間の認識に</p>
+	<p>齟齬が生じてしまうのですね。</p>
+	<p>でもこのままだと内部の時間はわかっても読むことができません。</p>
+
+
+	<br><br>
+	<img src="images/awk.png" alt="awk">
+        <p>そこで活躍するのが「awk」という汎用プログラミング言語です！</p>
+	<p>こちらUnix/Linux系統のカーネルを持つOSで使える言語でして</p>
+	<p>ログを整形して抽出することができます。</p>
+	<p>MacやAndroid、AWS(Amazon Web Services）のEC2内Amazon Linuxでも使用可能です。</p>
+	<p>余談ですがこのawk、製作者三人の名前の頭文字をとって、「awk」という名前に</p>
+	<p>したらしいです。仲良いですね。</p>
+	<br><br>
+
+
+	<img src="images/teraterm-log.png" alt="生ログスクショ">
+	<p>さて、さきほどの出力をもう一度見てみましょう。</p>
+	<p>ここでみなさんに覚えてほしいawkのルールが少しございまして、それは</p>
+	<p>$1や$2はそれぞれ1列目、2列目を表す特殊変数といったものです。</p>
+	<p>そして、内部処理がどうやってそれが何列目か判別するのかというお話なのですが</p>
+	<p>答えは「スペース」です。awkはスペースを区切りとして列を判断してるんですね。</p>
+	<p>なので、上記の出力させたログの一番上の行の場合は「192.168.0.201」が「$3」。</p>
+	<p>「www.google.com:443」が「$7」です。</p>
+	<p>この$3や$7などの特殊変数を使ってログの「どこ」をどう処理するか、</p>
+	<p>「どこ」をどう出力させるかなどを決めるわけですね。</p>
+
+	<br>
+	<p>そして、この「192.168.0.201」という番号がIPといいまして、今回は説明を端折りますが</p>
+	<p>簡単に言うと「この人のPCだよ」と特定できる数列です。</p>
+	<p>「www.google.com:443」というのが</p>
+	<p>アクセスしているドメインを表しています。</p>
+	<br><br><br>
+
+	<img src="images/awk.log1.png" alt="生ログスクショ">
+	<pre class="command-text">sudo tail -3 /var/log/squid/access.log | awk '{split($1,t,"\\.");print strftime("%F %T",t[1]),$3,$7}'</pre>
+	<br><br><br><br>
+
+	
+        <pre class="command-text">sudo tail -3 /var/log/squid/access.log |</pre>
+	<p>squidのアクセスログ、末尾から3行目まで出力。 「|」はパイプライン</p>
+	<p>と言ってその右のコマンドに標準入力を渡す記号です。</p>
+	<p>簡単に言うと、「ついでにこうして」って合図みたいなものです。</p>
+	<br><br>
+	<pre class="command-text">awk '{split($1,t,"\\.");</pre>
+	<p>awkでsplit関数を使います。$1を対象にしてドットを区切りとしたtという連想配列を作ります。</p>
+	<br><br>
+	<pre class="command-text">print strftime("%F %T",t[1])</pre>
+	<p>出力します。内容は、「strftime関数を使用。表示形式は「年-月-日 時:分:秒」</p>
+	<p>対象はさきほど作った「連想配列tの要素番号1の値」です。</p> <br><br>
+	<pre class="command-text">,$3,$7}'</pre>
+	<p>$3(3列目)と$7(7列目)のログも出力範囲に含めます。</p>
+	<br><br>
+
+	<img src="images/awk.log2.png" alt="生ログスクショ">
+	<p>特定の通信が継続的に発生していることが分かります</p>
+	<br>
+	<br>
+	<p>これで日時がちゃんと読めるようになりましたね。</p>
+	<p>これにより、ログとしての可読性が向上します。</p>
+	<p>この出力例では、動画配信関連のドメインへの通信が確認できます。</p>
+	<p>さらに、特定条件に該当する通信を抽出し、</p>
+	<p>発生頻度の傾向を確認してみます。</p>
+
+	<br><br>
+
+	<img src="images/awk_log3.png" alt="生ログスクショ">
+	<pre class="command-text">sudo awk '$3=="192.168.0.201" && $7~/googlevideo/ {split($1,t,"\\.");key=strftime("%F %H",t[1])" "$3;count[key]++} END {for(k in count)print k,count[k]}' /var/log/squid/access.log | sort -nr -k4 | head -20</pre>
+	<br><br><br>
+	<p>「192.168.0.201」のPCアクセスログで「googlevideo」というドメインが入ったアクセスを</p>
+	<p>時間を読みやすく表記したうえで</p>
+	<p>何時に何回アクセスがあったか、カウントして集計してください。</p>
+	<p>カウントが終わったら回数が多い順に並べてください。</p>
+	<p>最後に上位20件を出力してください。といった意味のコマンドを打ってみます。</p>
+	<p>※「googlevideo」は、動画配信サービス利用時に</p>
+	<p>高頻度でアクセスされるドメインです。</p>
+
+	<br><br><br>
+
+	<img src="images/awk_log4.png" alt="生ログスクショ">
+	<br><br>
+
+	<p>このように、プロキシログを整形抽出することで</p>
+	<p> 通信の傾向を把握できることが確認できました。</p>
+	<p>生ログのままでは分かりづらい情報も、</p>
+	<p>少し手を加えるだけで意味のあるデータになります。</p>
+
+	   <br><br>
+	</section>
+
+	<section class="profile">
+        <h2>さいごに</h2>
+	<div class="profile">
+        <img src="images/profile" alt="生ログスクショ">
+        </div>
+        
+	<p>今回初めてhtml/css/jsをいじってみましたが</p>
+	<p>スマホで確認してみたら表示がグチャグチャになっていたりと</p>
+	<p>大変な作業でしたが楽しかったです。様々なサイトがなぜ真ん中寄せ</p>
+	<p>のセクションで表示しているのか身を持って実感しました。</p>
+	<p>次作るときはもっとスムーズにできたらいいなぁ。。。</p>
+	<p>ここまで読んでいただきありがとうございました。</p>
+
+	
+	</section>
+	
+        <footer class="site-footer">
+            <p>&copy; 2026 Portfolio Portal</p>
+        </footer>
+
+    </main>
+
+</div>
+</body>
+</html>
